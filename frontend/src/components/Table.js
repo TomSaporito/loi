@@ -25,6 +25,7 @@ class Table extends Component {
 
     render() {
         const header = this.renderHeader();
+        console.log(header);
         const rows = this.renderBody();
         return (
             <table className="table table-bordered table-striped table-hover">
