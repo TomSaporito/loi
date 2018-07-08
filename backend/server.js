@@ -35,6 +35,19 @@ let updateUtility = async (id, col, val) => {
     return await utilities();
 };
 
+const sortById = function(arr){
+    arr.sort(function(a, b){
+        var keyA = a.id,
+            keyB = b.id;
+        // Compare the 2 dates
+        if(keyA < keyB) return -1;
+        if(keyA > keyB) return 1;
+        return 0;
+    });
+
+    return arr;
+}
+
 
 
 
@@ -90,13 +103,18 @@ function registerRoutes(){
         method: 'POST',
         path: '/utilities/{id?}',
         handler: async function(req, res){
-            let id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
-            console.log(req.body);
-            let ut = await updateUtility(id, col, val);
-            // console.log(ut.rows);
+            const id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
+            const col = Object.keys(req.payload)[0];
+            const val = req.payload[col];
+            const ut = await updateUtility(id, col, val);
+
+            ut.rows = sortById(ut.rows);
+
+          
+            
             //with v 17+ of hapi you just return the js object and it return json
             return{
-                ministries: min.rows
+                utilities: ut.rows
             };
         }
     });
