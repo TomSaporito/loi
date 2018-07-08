@@ -85,6 +85,13 @@ class App extends Component {
         utilities: data.utilities
       });
     });
+    fetch('/utilities')
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        utilities: data.utilities
+      });
+    });
   }
 
   renderMinistriesHead(){

@@ -8,7 +8,7 @@ class Table extends Component {
         if(this.props.data){
             return (
                 this.props.data.map((cell, i, arr)=>(
-                    <Row key={i} isBody={true} cells={cell}/>
+                    <Row key={i} table={this.props.tableName.toLowerCase()} isBody={true} cells={cell}/>
                 )
             ));
         }
@@ -28,7 +28,7 @@ class Table extends Component {
         console.log(header);
         const rows = this.renderBody();
         return (
-            <table className="table table-bordered table-striped table-hover">
+            <table className="table table-bordered table-striped">
                 <caption>
                     {this.props.tableName}
                 </caption>

@@ -13,12 +13,21 @@ const server = Hapi.server({
     port: 4000
 });
 
-let utilities = async () => {
-    return await client.query("SELECT * from utility");
+let utilities = async (param) => {
+    console.log('in ut ', param )
+    if (param){
+        return await client.query(`SELECT * from utility WHERE ID = ${param}`);
+    } else {
+        return await client.query("SELECT * from utility");
+    }
 };
 
-let ministries = async () => {
-    return await client.query("SELECT * from ministry");
+let ministries = async (param) => {
+    if (param){
+        return await client.query(`SELECT * from ministry WHERE ID = ${param}`);
+    } else {
+        return await client.query("SELECT * from ministry");
+    }
 };
 
 
@@ -58,16 +67,33 @@ function registerRoutes(){
 
     server.route({
         method: 'GET',
-        path: '/ministries',
+        path: '/ministries/{id?}',
         handler: async function(req, res){
-            let ut = await utilities();
-            let min = await ministries();
+            let id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
+            console.log(id);
+            let min = await ministries(id);
             // console.log(ut.rows);
             //with v 17+ of hapi you just return the js object and it return json
             return{
-                title: 'Home', 
-                utilities: ut.rows, 
                 ministries: min.rows
+            };
+        }
+    });
+
+
+    server.route({
+        method: 'GET',
+        path: '/utilities/{id?}',
+        handler: async function(req, res){
+            
+            let id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
+            console.log(id);
+            let ut = await utilities(id);
+    
+            // console.log(ut.rows);
+            //with v 17+ of hapi you just return the js object and it return json
+            return{
+                utilities: ut.rows
             };
         }
     });
