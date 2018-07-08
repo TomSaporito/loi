@@ -6,35 +6,53 @@ class Cell extends Component {
         this.state = {
             editing: false
         }
+        
     }
     handleBtn(){
-        if (this.state.editing){
-            fetch()
-            .then()
-            .then();
-        }
         this.setState({editing: !this.state.editing});
     }
 
     handleTextChange(e){
+        console.log(e);
         const name = e.target.name;
         const value = e.target.value;
         
         this.setState({
             [name]: value
+        }, ()=>{
+            const payload = {};
+            payload[this.props.cell]= this.state[this.props.cell];
+            console.log(payload, this.state);
+            
+            fetch(`/${this.props.fetch.toLowerCase()}/${this.props.id}`, {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, cors, *same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, same-origin, *omit
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: JSON.stringify({
+                    [this.props.cell]: this.state[this.props.cell]
+                }) 
+            })
+            .then()
+            .then();
         });
     }
 
     renderText(){
 
         if(this.state.editing){
-            return <input type={typeof this.props.text == 'string'? 'text': 'number'} name={this.props.text} onChange={(e)=>this.handleTextChange(e)} value={this.state[this.props.text] || this.props.text}/>
+            return <input type={typeof this.props.text == 'string'? 'text': 'number'} onBlur={(e)=>this.handleTextChange(e)} name={this.props.cell} onChange={(e)=>this.handleTextChange(e)} value={this.state[this.props.cell] || this.props.text}/>
         } else {
             return this.state[this.props.text] || this.props.text;
         }
 
     }
     render() {
+        
         return (    
             <td>
                 {this.renderText()}

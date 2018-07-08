@@ -30,6 +30,11 @@ let ministries = async (param) => {
     }
 };
 
+let updateUtility = async (id, col, val) => {
+    await client.query(`UPDATE utility SET ${col}=${val} WHERE id = ${id}`);
+    return await utilities();
+};
+
 
 
 
@@ -72,6 +77,22 @@ function registerRoutes(){
             let id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
             console.log(id);
             let min = await ministries(id);
+            // console.log(ut.rows);
+            //with v 17+ of hapi you just return the js object and it return json
+            return{
+                ministries: min.rows
+            };
+        }
+    });
+
+
+    server.route({
+        method: 'POST',
+        path: '/utilities/{id?}',
+        handler: async function(req, res){
+            let id = parseInt(req.params.id) > 0 ? encodeURIComponent(parseInt(req.params.id)) : null;
+            console.log(req.body);
+            let ut = await updateUtility(id, col, val);
             // console.log(ut.rows);
             //with v 17+ of hapi you just return the js object and it return json
             return{
