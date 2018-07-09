@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import appState from '../appState';
 
 class Cell extends Component {
     constructor(props){
@@ -37,8 +38,11 @@ class Cell extends Component {
                     [this.props.cell]: this.state[this.props.cell]
                 }) 
             })
-            .then()
-            .then();
+            .then(async (res)=>{
+                const s = await res.json();
+                appState.$emit('UPDATE_STATE', s);
+            })
+            .catch();
         });
     }
 

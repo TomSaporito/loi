@@ -15,6 +15,7 @@
     "hapi": "^17.5.2",
     "inert": "^5.1.0",
     "pg": "^7.4.3",
+    "substate": "^3.1.7",
     "vision": "^5.3.3"
   },
   "devDependencies": {

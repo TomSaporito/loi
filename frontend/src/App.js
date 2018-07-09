@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import appState from './appState';
 
 import Table from './components/Table';
 import Form from './components/Form';
@@ -71,6 +72,11 @@ class App extends Component {
       ministries: [{}],
       cards: []
     };
+
+    appState.$on('STATE_UPDATED', (s)=>{
+      console.log(s);
+      this.setState(s);
+    });
 
     
   }
